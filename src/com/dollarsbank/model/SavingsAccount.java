@@ -1,19 +1,19 @@
 package com.dollarsbank.model;
 
 public class SavingsAccount {
-    private Double amount;
+    private Double savingsAmount;
 
     public SavingsAccount() {
     }
 
     public SavingsAccount(Double amount) {
-        this.amount = amount;
+        this.savingsAmount = amount;
     }
 
     @Override
     public String toString() {
         return "SavingsAccount{" +
-                "amount=" + amount +
+                "savingsAmount=" + savingsAmount +
                 '}';
     }
 }

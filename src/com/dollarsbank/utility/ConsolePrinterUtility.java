@@ -7,8 +7,7 @@ import com.dollarsbank.model.SavingsAccount;
 import java.util.Scanner;
 
 public class ConsolePrinterUtility {
-    public int welcomeMessage() {
-        Scanner scanner = new Scanner(System.in);
+    public int welcomeMenuMessage(Scanner scanner) {
         System.out.println("+---------------------------+");
         System.out.println("| DOLLARSBANK Welcomes You! |");
         System.out.println("+---------------------------+");
@@ -16,11 +15,12 @@ public class ConsolePrinterUtility {
         System.out.println("2. Login");
         System.out.println("3. Exit.\n");
         System.out.println("Enter Choice (1,2 or 3) :");
+
         return scanner.nextInt();
     }
 
-    public Customer enterDetailsMessage() {
-        Scanner scanner = new Scanner(System.in);
+    public Customer newAccountMessage(Scanner scanner) {
+
         System.out.println("+-------------------------------+");
         System.out.println("| Enter Details For New Account |");
         System.out.println("+-------------------------------+");
@@ -36,6 +36,42 @@ public class ConsolePrinterUtility {
         String password = scanner.nextLine();
         System.out.println("Initial Deposit Amount");
         Double amount = scanner.nextDouble();
-        return new Customer(name, address, number, new Account(id, password, new SavingsAccount(amount)));
+
+        return new Customer(name, address, number, new Account(id, password, amount, new SavingsAccount()));
+    }
+
+    public void loginPromptMessage(Scanner scanner) {
+        System.out.println("+---------------------+");
+        System.out.println("| Enter Login Details |");
+        System.out.println("+---------------------+");
+        System.out.println("User Id :");
+        String id = scanner.nextLine();
+        System.out.println("Password :");
+        String password = scanner.nextLine();
+    }
+
+    public int loginSuccessMessage(Scanner scanner) {
+        System.out.println("+--------------------+");
+        System.out.println("| WECOME Customer!!! |");
+        System.out.println("+--------------------+");
+        System.out.println("1. Deposit Amount");
+        System.out.println("2. Withdraw Amount");
+        System.out.println("3. Funds Transfer");
+        System.out.println("4. View 5 Recent Transactions");
+        System.out.println("5. Display Customer Information");
+        System.out.println("6. Sign Out");
+        System.out.println("Enter Choice (1,2,3,4,5 or 6) :");
+
+        return scanner.nextInt();
+    }
+
+    public double depositMessage(Scanner scanner) {
+        System.out.println("Enter deposit amount:");
+        return scanner.nextDouble();
+    }
+
+    public boolean withdrawMessage(Scanner scanner) {
+        System.out.println("Enter withdraw amount:");
+        return true;
     }
 }

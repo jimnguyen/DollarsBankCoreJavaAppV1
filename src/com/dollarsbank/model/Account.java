@@ -3,14 +3,16 @@ package com.dollarsbank.model;
 public class Account {
     private String id;
     private String password;
+    private Double checkingAmount;
     private SavingsAccount savingsAccount;
 
     public Account() {
     }
 
-    public Account(String id, String password, SavingsAccount savingsAccount) {
+    public Account(String id, String password, Double checkingAmount, SavingsAccount savingsAccount) {
         this.id = id;
         this.password = password;
+        this.checkingAmount = checkingAmount;
         this.savingsAccount = savingsAccount;
     }
 
@@ -30,6 +32,14 @@ public class Account {
         this.password = password;
     }
 
+    public Double getCheckingAmount() {
+        return checkingAmount;
+    }
+
+    public void setCheckingAmount(Double checkingAmount) {
+        this.checkingAmount = checkingAmount;
+    }
+
     public SavingsAccount getSavingsAccount() {
         return savingsAccount;
     }
@@ -42,6 +52,8 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "id='" + id + '\'' +
+                ", password='" + password + '\'' +
+                ", checkingAmount=" + checkingAmount +
                 ", savingsAccount=" + savingsAccount +
                 '}';
     }
