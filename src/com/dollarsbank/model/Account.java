@@ -9,6 +9,12 @@ public class Account {
     public Account() {
     }
 
+    public Account(String id, String password, Double checkingAmount) {
+        this.id = id;
+        this.password = password;
+        this.checkingAmount = checkingAmount;
+    }
+
     public Account(String id, String password, Double checkingAmount, SavingsAccount savingsAccount) {
         this.id = id;
         this.password = password;
