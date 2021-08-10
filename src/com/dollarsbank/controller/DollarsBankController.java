@@ -6,9 +6,7 @@ import java.util.List;
 
 public class DollarsBankController {
 
-    public List<Customer> customerList;
-
-    public void createNewAccount(Customer customer) {
+    public void createAccount(List<Customer> customerList, Customer customer) {
         customerList.add(customer);
     }
 }

@@ -6,30 +6,37 @@ import com.dollarsbank.model.Customer;
 import com.dollarsbank.model.SavingsAccount;
 import com.dollarsbank.utility.ColorsUtility;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class DollarsBankApplication {
 
+    public static DollarsBankController dollarsBankController = new DollarsBankController();
+
     public static void main(String[] args) {
+        List<Customer> customers = new ArrayList<>();
+        customers.add(new Customer("Jim", "123 React Lane", "1231231233", new Account("U123", "password", 5000.00)));
         try (Scanner scanner = new Scanner(System.in)) {
-            start(scanner);
+            start(scanner, customers);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void start(Scanner scanner) {
+    public static void start(Scanner scanner, List<Customer> customers) {
         int option;
         while (true) {
             option = welcome(scanner);
             switch (option) {
-                case 1 -> createNewAccount(scanner);
-                case 2 -> login(scanner);
+                case 1 -> createAccount(scanner, customers);
+                case 2 -> login(scanner, customers);
                 case 3 -> {
                     System.out.println("\nYou are now exiting DOLLARSBANK.");
                     System.out.println("Goodbye!");
                     System.exit(1);
                 }
+                case 4 -> System.out.println("\n" + customers);
                 default -> System.out.println("Please select a valid option.\n");
             }
         }
@@ -44,7 +51,8 @@ public class DollarsBankApplication {
         return scanner.nextInt();
     }
 
-    public static void createNewAccount(Scanner scanner) {
+    public static void createAccount(Scanner scanner, List<Customer> customers) {
+        scanner.nextLine();
         System.out.println("Customer Name:");
         String name = scanner.nextLine();
         System.out.println("Customer Address:");
@@ -57,12 +65,11 @@ public class DollarsBankApplication {
         String password = scanner.nextLine();
         System.out.println("Initial Deposit Amount");
         Double amount = scanner.nextDouble();
-        DollarsBankController dollarsBankController = new DollarsBankController();
         Customer customer = new Customer(name, address, number, new Account(id, password, amount));
-        dollarsBankController.createNewAccount(customer);
+        dollarsBankController.createAccount(customers, customer);
     }
 
-    public static void login(Scanner scanner) {
+    public static void login(Scanner scanner, List<Customer> customers) {
         System.out.println("User Id :");
         String id = scanner.nextLine();
         System.out.println("Password :");

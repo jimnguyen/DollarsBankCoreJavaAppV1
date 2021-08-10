@@ -50,11 +50,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", number='" + number + '\'' +
-                ", account=" + account +
-                '}';
+        return "Customer | " + "name: " + name + " | address: " + address + " | number: " + number + " | account: " + account;
     }
 }

@@ -12,8 +12,7 @@ public class SavingsAccount {
 
     @Override
     public String toString() {
-        return "SavingsAccount{" +
-                "savingsAmount=" + savingsAmount +
-                '}';
+        return "SavingsAccount | " +
+                "savingsAmount: " + savingsAmount;
     }
 }
