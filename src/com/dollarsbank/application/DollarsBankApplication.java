@@ -2,6 +2,7 @@ package com.dollarsbank.application;
 
 import com.dollarsbank.controller.DollarsBankController;
 import com.dollarsbank.exceptions.InvalidInformationException;
+import com.dollarsbank.exceptions.InvalidNameException;
 import com.dollarsbank.exceptions.InvalidPasswordException;
 import com.dollarsbank.exceptions.InvalidPhoneNumberException;
 import com.dollarsbank.model.Account;
@@ -11,6 +12,8 @@ import com.dollarsbank.utility.ConsolePrinterUtility;
 
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DollarsBankApplication {
 
@@ -19,10 +22,6 @@ public class DollarsBankApplication {
     public static void main(String[] args) {
         List<Customer> customers = new ArrayList<>();
         Set<Account> accounts = new HashSet<>();
-        Account tempAccount = new Account("U123", "123", 5000.00, new ArrayList<>());
-        accounts.add(tempAccount);
-        Customer tempCustomer = new Customer("Jim", "123 React Lane", "1231231233", tempAccount);
-        customers.add(tempCustomer);
         try (Scanner scanner = new Scanner(System.in)) {
             start(scanner, customers, accounts);
         } catch (InputMismatchException e) {
@@ -42,7 +41,10 @@ public class DollarsBankApplication {
                     System.out.println("Goodbye!");
                     System.exit(1);
                 }
-                default -> System.out.println("Please select a valid option.\n");
+                default -> {
+                    System.out.println("Please select a valid option.\n");
+                    start(scanner, customers, accounts);
+                }
             }
         }
     }
@@ -61,27 +63,36 @@ public class DollarsBankApplication {
             // Retrieve new customer account information
             System.out.println("Customer Name:");
             String name = scanner.nextLine();
-            if (name.length() == 0) {
-                throw new InvalidInformationException();
+            if (name.split(" ").length < 2) {
+                throw new InvalidNameException();
             }
+
             System.out.println("Customer Address:");
             String address = scanner.nextLine();
             if (address.length() == 0) {
                 throw new InvalidInformationException();
             }
-            System.out.println("Customer Contact Number:");
+
+            System.out.println("Customer Contact Number (10 Digits):");
             String number = scanner.nextLine();
             if (number.length() != 10) {
                 throw new InvalidPhoneNumberException();
             }
-            System.out.println("User Id :");
+
+            System.out.println("User Id:");
             String id = scanner.nextLine();
-            System.out.println("Password : 8 Characters with Lower,Upper & Special");
+            System.out.println("Password (8 Characters with Lower, Upper & Special):");
             String password = scanner.nextLine();
-            if (password.length() < 8) {
+            String regex = "^(?=.*[a-z])(?=."
+                    + "*[A-Z])(?=.*\\d)"
+                    + "(?=.*[-+_!@#$%^&*., ?]).+$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(password);
+            if (!matcher.matches() || password.length() < 8) {
                 throw new InvalidPasswordException();
             }
-            System.out.println("Initial Deposit Amount");
+
+            System.out.println("Initial Deposit Amount:");
             double amount = scanner.nextDouble();
             if (amount == 0) {
                 throw new ArithmeticException("Please enter an amount greater than 0");
@@ -89,14 +100,14 @@ public class DollarsBankApplication {
 
             // Use controller to add to "database"
             List<String> transactions = new ArrayList<>();
-            transactions.add("Initial Deposit Amount in account [" + id + "].\nBalance - " + amount + " as on " + new Date());
+            transactions.add("Initial Deposit Amount in account [" + id + "]. Balance - " + amount + " as on " + new Date());
             Account account = new Account(id.trim(), password.trim(), amount, transactions);
             Customer customer = new Customer(name.trim(), address.trim(), number.trim(), account);
 
             dollarsBankController.createAccount(customers, customer);
             dollarsBankController.addAccount(accounts, account);
-        } catch (InputMismatchException | InvalidInformationException | InvalidPhoneNumberException | InvalidPasswordException e) {
-            e.printStackTrace();
+        } catch (InputMismatchException | InvalidInformationException | InvalidPhoneNumberException | InvalidPasswordException | InvalidNameException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -146,7 +157,7 @@ public class DollarsBankApplication {
                 }
             }
         } catch (InputMismatchException e) {
-            System.out.println("Please provide a valid id number\n");
+            System.out.println("Please provide valid input\n");
         }
     }
 
@@ -213,9 +224,13 @@ public class DollarsBankApplication {
 
     private static void recentTransactions(Account account) {
         List<String> transactions = account.getTransactions();
-        Collections.reverse(transactions);
-        for (String string : transactions) {
-            System.out.println(string + "\n");
+        ConsolePrinterUtility.recentTransactionsMessage();
+        int number = 1;
+        for (int i = 0; i < transactions.size(); i++) {
+            if (number == 6) {
+                return;
+            }
+            System.out.println(number++ + ". " + transactions.get(i));
         }
     }
 

@@ -43,7 +43,7 @@ public class DollarsBankController {
         System.out.printf("Your new balance is now " + ColorsUtility.YELLOW +  "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
 
         List<String> transactions = account.getTransactions();
-        transactions.add("Deposited " + amount + " into CHECKING account on " + new Date());
+        transactions.add(0, "Deposited $" + amount + " into CHECKING account on " + new Date());
         account.setTransactions(transactions);
     }
 
@@ -76,7 +76,7 @@ public class DollarsBankController {
         System.out.printf("Your new balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
 
         List<String> transactions = account.getTransactions();
-        transactions.add("Withdrew " + amount + " from CHECKING account on " + new Date());
+        transactions.add(0, "Withdrew $" + amount + " from CHECKING account on " + new Date());
     }
 
     public void checkingTransfer(Account account, Double amount) {
@@ -99,7 +99,7 @@ public class DollarsBankController {
         System.out.printf("Your new CHECKING balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
 
         List<String> transactions = account.getTransactions();
-        transactions.add("Transferred " + amount + " into SAVINGS account on " + new Date());
+        transactions.add(0, "Transferred $" + amount + " into SAVINGS account on " + new Date());
     }
 
     public void savingsTransfer(Account account, Double amount) {
@@ -117,6 +117,6 @@ public class DollarsBankController {
         System.out.printf("Your new SAVINGS balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, savingsAccount.getSavingsAmount());
 
         List<String> transactions = account.getTransactions();
-        transactions.add("Transferred " + amount + " into CHECKING account on " + new Date());
+        transactions.add(0, "Transferred $" + amount + " into CHECKING account on " + new Date());
     }
 }

@@ -1,7 +1,5 @@
 package com.dollarsbank.utility;
 
-import java.util.Scanner;
-
 public class ConsolePrinterUtility {
     public static void welcomeMenuMessage() {
         System.out.println(ColorsUtility.BLUE + "+---------------------------+");
@@ -10,7 +8,7 @@ public class ConsolePrinterUtility {
         System.out.println("1. Create New Account");
         System.out.println("2. Login");
         System.out.println("3. Exit.\n");
-        System.out.println(ColorsUtility.GREEN + "Enter Choice (1,2 or 3) :" + ColorsUtility.RESET);
+        System.out.println(ColorsUtility.GREEN + "Enter Choice (1, 2 or 3) :" + ColorsUtility.RESET);
     }
 
     public static void newAccountMessage() {
@@ -36,14 +34,13 @@ public class ConsolePrinterUtility {
         System.out.println("4. View 5 Recent Transactions");
         System.out.println("5. Display Customer Information");
         System.out.println("6. Sign Out\n");
-        System.out.println(ColorsUtility.GREEN + "Enter Choice (1,2,3,4,5 or 6) :" + ColorsUtility.RESET);
+        System.out.println(ColorsUtility.GREEN + "Enter Choice (1, 2, 3, 4, 5 or 6) :" + ColorsUtility.RESET);
     }
 
-    public static void recentTransactionsMessage(Scanner scanner) {
+    public static void recentTransactionsMessage() {
         System.out.println(ColorsUtility.BLUE + "+------------------------+");
         System.out.println(ColorsUtility.BLUE + "| 5 Recent Transactions: |");
-        System.out.println(ColorsUtility.BLUE + "+------------------------+");
-        System.out.println(ColorsUtility.RED + "FIX THIS");
+        System.out.println(ColorsUtility.BLUE + "+------------------------+" + ColorsUtility.RESET);
 
     }
 
@@ -76,7 +73,7 @@ public class ConsolePrinterUtility {
         System.out.println("1. Checking Account");
         System.out.println("2. Savings Account");
         System.out.println("3. Exit");
-        System.out.println("\nEnter option here (1 or 2):");
+        System.out.println("\nEnter option here (1, 2 or 3):");
     }
 
     public static void checkingTransferMessage() {
