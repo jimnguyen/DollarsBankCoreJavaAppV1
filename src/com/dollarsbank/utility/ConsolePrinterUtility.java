@@ -41,7 +41,6 @@ public class ConsolePrinterUtility {
         System.out.println(ColorsUtility.BLUE + "+------------------------+");
         System.out.println(ColorsUtility.BLUE + "| 5 Recent Transactions: |");
         System.out.println(ColorsUtility.BLUE + "+------------------------+" + ColorsUtility.RESET);
-
     }
 
     public static void depositMessage() {
@@ -81,6 +80,7 @@ public class ConsolePrinterUtility {
         System.out.println(ColorsUtility.BLUE + "| CHECKING TO SAVINGS TRANSFER |");
         System.out.println(ColorsUtility.BLUE + "+------------------------------+" + ColorsUtility.RESET);
     }
+
     public static void savingsTransferMessage() {
         System.out.println(ColorsUtility.BLUE + "+------------------------------+");
         System.out.println(ColorsUtility.BLUE + "| SAVINGS TO CHECKING TRANSFER |");

@@ -60,27 +60,56 @@ public class DollarsBankApplication {
         scanner.nextLine();
 
         try {
+
+            List<String> ids = new ArrayList<>();
+            List<String> numbers = new ArrayList<>();
+
+            for (Account account : accounts) {
+                ids.add(account.getId());
+            }
+
+            for (Customer customer : customers) {
+                numbers.add(customer.getNumber());
+            }
+
             // Retrieve new customer account information
+
+            // Customer Name
             System.out.println("Customer Name:");
             String name = scanner.nextLine();
             if (name.split(" ").length < 2) {
                 throw new InvalidNameException();
             }
 
+            // Customer Address
             System.out.println("Customer Address:");
             String address = scanner.nextLine();
             if (address.length() == 0) {
                 throw new InvalidInformationException();
             }
 
+            // Customer Number
             System.out.println("Customer Contact Number (10 Digits):");
             String number = scanner.nextLine();
             if (number.length() != 10) {
                 throw new InvalidPhoneNumberException();
             }
 
+            if (numbers.contains(number)) {
+                System.out.println(ColorsUtility.RED + "This number already exists. Try another number.\n" + ColorsUtility.RESET);
+                return;
+            }
+
+            // Customer Id
             System.out.println("User Id:");
             String id = scanner.nextLine();
+
+            if (ids.contains(id)) {
+                System.out.println(ColorsUtility.RED + "This id already exists. Try another id.\n" + ColorsUtility.RESET);
+                return;
+            }
+
+            // Customer Number
             System.out.println("Password (8 Characters with Lower, Upper & Special):");
             String password = scanner.nextLine();
             String regex = "^(?=.*[a-z])(?=."
@@ -92,6 +121,7 @@ public class DollarsBankApplication {
                 throw new InvalidPasswordException();
             }
 
+            // Deposit Amount
             System.out.println("Initial Deposit Amount:");
             double amount = scanner.nextDouble();
             if (amount == 0) {
@@ -101,11 +131,15 @@ public class DollarsBankApplication {
             // Use controller to add to "database"
             List<String> transactions = new ArrayList<>();
             transactions.add("Initial Deposit Amount in account [" + id + "]. Balance - " + amount + " as on " + new Date());
+
             Account account = new Account(id.trim(), password.trim(), amount, transactions);
             Customer customer = new Customer(name.trim(), address.trim(), number.trim(), account);
 
-            dollarsBankController.createAccount(customers, customer);
-            dollarsBankController.addAccount(accounts, account);
+            if (!customers.contains(customer)) {
+                dollarsBankController.createAccount(customers, customer);
+                dollarsBankController.addAccount(accounts, account);
+            }
+
         } catch (InputMismatchException | InvalidInformationException | InvalidPhoneNumberException | InvalidPasswordException | InvalidNameException e) {
             System.out.println(e.getMessage());
         }

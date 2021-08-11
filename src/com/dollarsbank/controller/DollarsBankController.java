@@ -40,7 +40,7 @@ public class DollarsBankController {
     public void deposit(Account account, Double amount) {
         account.setCheckingAmount(account.getCheckingAmount() + amount);
         System.out.printf("%nYou have successfully deposited " + ColorsUtility.YELLOW + "$%.2f" + ColorsUtility.RESET + " into your account!%n", amount);
-        System.out.printf("Your new balance is now " + ColorsUtility.YELLOW +  "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
+        System.out.printf("Your new balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
 
         List<String> transactions = account.getTransactions();
         transactions.add(0, "Deposited $" + amount + " into CHECKING account on " + new Date());
