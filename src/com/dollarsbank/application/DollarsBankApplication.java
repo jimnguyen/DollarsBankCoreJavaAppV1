@@ -1,6 +1,9 @@
 package com.dollarsbank.application;
 
 import com.dollarsbank.controller.DollarsBankController;
+import com.dollarsbank.exceptions.InvalidInformationException;
+import com.dollarsbank.exceptions.InvalidPasswordException;
+import com.dollarsbank.exceptions.InvalidPhoneNumberException;
 import com.dollarsbank.model.Account;
 import com.dollarsbank.model.Customer;
 import com.dollarsbank.utility.ColorsUtility;
@@ -16,7 +19,7 @@ public class DollarsBankApplication {
     public static void main(String[] args) {
         List<Customer> customers = new ArrayList<>();
         Set<Account> accounts = new HashSet<>();
-        Account tempAccount = new Account("U123", "123", 5000.00);
+        Account tempAccount = new Account("U123", "123", 5000.00, new ArrayList<>());
         accounts.add(tempAccount);
         Customer tempCustomer = new Customer("Jim", "123 React Lane", "1231231233", tempAccount);
         customers.add(tempCustomer);
@@ -39,7 +42,6 @@ public class DollarsBankApplication {
                     System.out.println("Goodbye!");
                     System.exit(1);
                 }
-                case 4 -> System.out.println("\n" + customers);
                 default -> System.out.println("Please select a valid option.\n");
             }
         }
@@ -59,27 +61,41 @@ public class DollarsBankApplication {
             // Retrieve new customer account information
             System.out.println("Customer Name:");
             String name = scanner.nextLine();
+            if (name.length() == 0) {
+                throw new InvalidInformationException();
+            }
             System.out.println("Customer Address:");
             String address = scanner.nextLine();
+            if (address.length() == 0) {
+                throw new InvalidInformationException();
+            }
             System.out.println("Customer Contact Number:");
             String number = scanner.nextLine();
+            if (number.length() != 10) {
+                throw new InvalidPhoneNumberException();
+            }
             System.out.println("User Id :");
             String id = scanner.nextLine();
             System.out.println("Password : 8 Characters with Lower,Upper & Special");
             String password = scanner.nextLine();
+            if (password.length() < 8) {
+                throw new InvalidPasswordException();
+            }
             System.out.println("Initial Deposit Amount");
-            Double amount = scanner.nextDouble();
-
+            double amount = scanner.nextDouble();
+            if (amount == 0) {
+                throw new ArithmeticException("Please enter an amount greater than 0");
+            }
 
             // Use controller to add to "database"
-            Account account = new Account(id.trim(), password.trim(), amount);
+            List<String> transactions = new ArrayList<>();
+            transactions.add("Initial Deposit Amount in account [" + id + "].\nBalance - " + amount + " as on " + new Date());
+            Account account = new Account(id.trim(), password.trim(), amount, transactions);
             Customer customer = new Customer(name.trim(), address.trim(), number.trim(), account);
 
             dollarsBankController.createAccount(customers, customer);
             dollarsBankController.addAccount(accounts, account);
-        } catch (InputMismatchException e) {
-            System.out.println("Please provide the correct information\n");
-        } catch (Exception e) {
+        } catch (InputMismatchException | InvalidInformationException | InvalidPhoneNumberException | InvalidPasswordException e) {
             e.printStackTrace();
         }
     }
@@ -90,9 +106,12 @@ public class DollarsBankApplication {
             return;
         }
 
+        System.out.println();
+        ConsolePrinterUtility.loginPromptMessage();
+
         // Retrieve user login information
         scanner.nextLine();
-        System.out.println("\nUser Id :");
+        System.out.println("User Id :");
         String id = scanner.nextLine();
         System.out.println(ColorsUtility.RESET + "Password :");
         String password = scanner.nextLine();
@@ -100,13 +119,13 @@ public class DollarsBankApplication {
 
         if (valid) {
             Account account = dollarsBankController.getAccount(accounts, id, password);
-            welcomeCustomer(scanner, customers, account);
+            welcomeCustomer(scanner, customers, account, accounts);
         } else {
             System.out.println(ColorsUtility.RED + "Invalid Credentials. Try Again!\n" + ColorsUtility.RESET);
         }
     }
 
-    public static void welcomeCustomer(Scanner scanner, List<Customer> customers, Account account) {
+    public static void welcomeCustomer(Scanner scanner, List<Customer> customers, Account account, Set<Account> accounts) {
         int option = 0;
         try {
             while (option != 6) {
@@ -116,10 +135,13 @@ public class DollarsBankApplication {
                 switch (option) {
                     case 1 -> deposit(scanner, account);
                     case 2 -> withdraw(scanner, account);
-                    case 3 -> fundsTransfer(scanner, customers, account);
-                    case 4 -> System.out.println("RECENT TRANSACTIONS");
+                    case 3 -> fundsTransfer(scanner, customers, account, accounts);
+                    case 4 -> recentTransactions(account);
                     case 5 -> display(customers, account);
-                    case 6 -> System.out.println("You are signing out now... Goodbye!");
+                    case 6 -> {
+                        System.out.println("You are signing out now... Goodbye!\n");
+                        start(scanner, customers, accounts);
+                    }
                     default -> System.out.println("Please select a valid option");
                 }
             }
@@ -140,7 +162,7 @@ public class DollarsBankApplication {
         dollarsBankController.withdraw(account, amount);
     }
 
-    private static void fundsTransfer(Scanner scanner, List<Customer> customers, Account account) {
+    private static void fundsTransfer(Scanner scanner, List<Customer> customers, Account account, Set<Account> accounts) {
         int option = 0;
         while (option != 3) {
             ConsolePrinterUtility.fundsTransferMessage();
@@ -148,7 +170,7 @@ public class DollarsBankApplication {
             switch (option) {
                 case 1 -> transferChecking(scanner, account);
                 case 2 -> transferSavings(scanner, account);
-                case 3 -> welcomeCustomer(scanner, customers, account);
+                case 3 -> welcomeCustomer(scanner, customers, account, accounts);
                 default -> System.out.println("Please select a valid option\n");
             }
         }
@@ -187,6 +209,14 @@ public class DollarsBankApplication {
         }
 
         dollarsBankController.savingsTransfer(account, amount);
+    }
+
+    private static void recentTransactions(Account account) {
+        List<String> transactions = account.getTransactions();
+        Collections.reverse(transactions);
+        for (String string : transactions) {
+            System.out.println(string + "\n");
+        }
     }
 
     private static void display(List<Customer> customers, Account account) {

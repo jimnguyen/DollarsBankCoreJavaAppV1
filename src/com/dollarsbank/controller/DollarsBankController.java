@@ -5,10 +5,8 @@ import com.dollarsbank.model.Customer;
 import com.dollarsbank.model.SavingsAccount;
 import com.dollarsbank.utility.ColorsUtility;
 
-import java.awt.*;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 import java.util.Set;
 
 public class DollarsBankController {
@@ -43,6 +41,10 @@ public class DollarsBankController {
         account.setCheckingAmount(account.getCheckingAmount() + amount);
         System.out.printf("%nYou have successfully deposited " + ColorsUtility.YELLOW + "$%.2f" + ColorsUtility.RESET + " into your account!%n", amount);
         System.out.printf("Your new balance is now " + ColorsUtility.YELLOW +  "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
+
+        List<String> transactions = account.getTransactions();
+        transactions.add("Deposited " + amount + " into CHECKING account on " + new Date());
+        account.setTransactions(transactions);
     }
 
     public void display(List<Customer> customers, Account account) {
@@ -72,6 +74,9 @@ public class DollarsBankController {
         account.setCheckingAmount(account.getCheckingAmount() - amount);
         System.out.printf("%nYou have successfully withdrawn " + ColorsUtility.YELLOW + "$%.2f" + ColorsUtility.RESET + " from your account!%n", amount);
         System.out.printf("Your new balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
+
+        List<String> transactions = account.getTransactions();
+        transactions.add("Withdrew " + amount + " from CHECKING account on " + new Date());
     }
 
     public void checkingTransfer(Account account, Double amount) {
@@ -92,6 +97,9 @@ public class DollarsBankController {
         System.out.printf("%nYou have successfully transferred " + ColorsUtility.YELLOW + "$%.2f" + ColorsUtility.RESET + " from your CHECKING account!%n", amount);
         System.out.printf("Your new SAVINGS balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, savingsAccount.getSavingsAmount());
         System.out.printf("Your new CHECKING balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
+
+        List<String> transactions = account.getTransactions();
+        transactions.add("Transferred " + amount + " into SAVINGS account on " + new Date());
     }
 
     public void savingsTransfer(Account account, Double amount) {
@@ -107,5 +115,8 @@ public class DollarsBankController {
         System.out.printf("%nYou have successfully transferred " + ColorsUtility.YELLOW + "$%.2f" + ColorsUtility.RESET + " from your SAVINGS account!%n", amount);
         System.out.printf("Your new CHECKING balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, account.getCheckingAmount());
         System.out.printf("Your new SAVINGS balance is now " + ColorsUtility.YELLOW + "$%.2f%n" + ColorsUtility.RESET, savingsAccount.getSavingsAmount());
+
+        List<String> transactions = account.getTransactions();
+        transactions.add("Transferred " + amount + " into CHECKING account on " + new Date());
     }
 }

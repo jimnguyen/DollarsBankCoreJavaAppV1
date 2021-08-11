@@ -22,7 +22,7 @@ public class ConsolePrinterUtility {
     public static void loginPromptMessage() {
         System.out.println(ColorsUtility.BLUE + "+---------------------+");
         System.out.println(ColorsUtility.BLUE + "| Enter Login Details |");
-        System.out.println(ColorsUtility.BLUE + "+---------------------+");
+        System.out.println(ColorsUtility.BLUE + "+---------------------+" + ColorsUtility.RESET);
     }
 
     public static void loginSuccessMessage() {

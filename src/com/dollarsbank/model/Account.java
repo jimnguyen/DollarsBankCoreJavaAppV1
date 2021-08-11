@@ -1,10 +1,13 @@
 package com.dollarsbank.model;
 
+import java.util.List;
+
 public class Account {
     private String id;
     private String password;
     private Double checkingAmount;
     private SavingsAccount savingsAccount;
+    private List<String> transactions;
 
     public Account() {
     }
@@ -20,6 +23,21 @@ public class Account {
         this.password = password;
         this.checkingAmount = checkingAmount;
         this.savingsAccount = savingsAccount;
+    }
+
+    public Account(String id, String password, Double checkingAmount, SavingsAccount savingsAccount, List<String> transactions) {
+        this.id = id;
+        this.password = password;
+        this.checkingAmount = checkingAmount;
+        this.savingsAccount = savingsAccount;
+        this.transactions = transactions;
+    }
+
+    public Account(String id, String password, Double checkingAmount, List<String> transactions) {
+        this.id = id;
+        this.password = password;
+        this.checkingAmount = checkingAmount;
+        this.transactions = transactions;
     }
 
     public String getId() {
@@ -52,6 +70,14 @@ public class Account {
 
     public void setSavingsAccount(SavingsAccount savingsAccount) {
         this.savingsAccount = savingsAccount;
+    }
+
+    public List<String> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<String> transactions) {
+        this.transactions = transactions;
     }
 
     @Override
